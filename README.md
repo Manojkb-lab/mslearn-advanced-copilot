@@ -11,6 +11,51 @@ Gain more practical experience by using this repository that contains a Python W
 1. Enable your [GitHub Copilot service](https://github.com/github-copilot/signup)
 1. Open [this repository with Codespaces](https://codespaces.new/MicrosoftDocs/mslearn-copilot-codespaces-python)
 
+## 🚀 Run the project
+
+The app is a [FastAPI](https://fastapi.tiangolo.com/) Travel Weather API that serves historical weather data from `weather.json`.
+
+### Prerequisites
+
+- Python 3.10 or later
+- Alternatively, use Codespaces or the Dev Container, which install everything for you
+
+### Setup
+
+```bash
+python -m venv .venv
+source .venv/bin/activate    # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### Start the API
+
+```bash
+uvicorn main:app --reload
+```
+
+The server listens on <http://127.0.0.1:8000>. Opening the root URL redirects to the interactive documentation at `/docs`.
+
+| Endpoint | Description |
+| -------- | ----------- |
+| `GET /countries` | List the available countries |
+| `GET /countries/{country}` | List the cities of a country (404 if unknown) |
+| `GET /countries/{country}/{city}/{month}` | Historical weather for a city and month |
+
+Example:
+
+```bash
+curl http://127.0.0.1:8000/countries/Spain
+```
+
+Starting the app also regenerates `.well-known/openapi.json` from the API definition.
+
+### Run the tests
+
+```bash
+pytest
+```
+
 ## 💪🏽 Exercise
 The current API is not exposing country/{country} which needs to be implemented to list cities. The route should allow only GET HTTP requests with a JSON response providing information from the historical high and low for that country, city, and given month.
 
