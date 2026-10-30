@@ -1,0 +1,147 @@
+{
+  "info": {
+    "_postman_id": "8bcbfa9b-956b-44a2-a6af-e9a9daf29a32",
+    "name": "Travel Weather API",
+    "description": "Smoke tests for the Travel Weather API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000"
+    }
+  ],
+  "item": [
+    {
+      "name": "List countries",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/countries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "countries"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('returns 200 with a JSON array containing Spain', function () {",
+              "    pm.response.to.have.status(200);",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+              "    const countries = pm.response.json();",
+              "    pm.expect(countries).to.be.an('array');",
+              "    pm.expect(countries).to.include('Spain');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "List cities in Spain",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/countries/Spain",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "countries",
+            "Spain"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('returns the Spanish city list', function () {",
+              "    pm.response.to.have.status(200);",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+              "    pm.expect(pm.response.json()).to.deep.equal(['Seville']);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unknown country returns 404",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/countries/Atlantis",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "countries",
+            "Atlantis"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('returns a 404 JSON error for an unknown country', function () {",
+              "    pm.response.to.have.status(404);",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+              "    pm.expect(pm.response.json()).to.have.property('detail', 'Country not found');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Seville weather for January",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/countries/Spain/Seville/January",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "countries",
+            "Spain",
+            "Seville",
+            "January"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('returns Seville January high and low', function () {",
+              "    pm.response.to.have.status(200);",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+              "    pm.expect(pm.response.json()).to.deep.equal({ high: 61, low: 41 });",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

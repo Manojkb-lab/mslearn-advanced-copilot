@@ -56,6 +56,15 @@ Starting the app also regenerates `.well-known/openapi.json` from the API defini
 pytest
 ```
 
+### Test with Postman
+
+Start the API with `uvicorn main:app --reload`, then import
+[`postman/travel-weather-api.postman_collection.json`](./postman/travel-weather-api.postman_collection.json)
+into Postman. Run the **Travel Weather API** collection; it checks the country
+list, Spain's cities, the 404 response for an unknown country, and Seville's
+January high and low. The collection's `baseUrl` variable defaults to
+`http://127.0.0.1:8000` and can be changed for another server.
+
 ## 💪🏽 Exercise
 The current API is not exposing country/{country} which needs to be implemented to list cities. The route should allow only GET HTTP requests with a JSON response providing information from the historical high and low for that country, city, and given month.
 
